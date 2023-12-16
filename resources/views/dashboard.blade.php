@@ -7,11 +7,17 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="overflow-hidden">
                 <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+                    <div class="flex mb-4">
+                        <x-sales-summery title="Today" sales="0"/>
+                        <x-sales-summery title="Yesterday" sales="0"/>
+                        <x-sales-summery title="This Month" sales="0"/>
+                        <x-sales-summery title="Last Month" sales="0"/>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
 </x-app-layout>
