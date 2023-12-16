@@ -10,10 +10,10 @@
             <div class="overflow-hidden">
                 <div class="p-6 text-gray-900">
                     <div class="flex mb-4">
-                        <x-sales-summery title="Today" :sales="number_format($today, 2)"/>
-                        <x-sales-summery title="Yesterday" :sales="number_format($yesterday, 2)"/>
-                        <x-sales-summery title="This Month" :sales="number_format($thisMonth, 2)"/>
-                        <x-sales-summery title="Last Month" :sales="number_format($lastMonth, 2)"/>
+                        <x-sales-summery title="Today Sales" :sales="number_format($today, 2)"/>
+                        <x-sales-summery title="Yesterday Sales" :sales="number_format($yesterday, 2)"/>
+                        <x-sales-summery title="This Month Sales" :sales="number_format($thisMonth, 2)"/>
+                        <x-sales-summery title="Last Month Sales" :sales="number_format($lastMonth, 2)"/>
                     </div>
                 </div>
             </div>

@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mb-5">
-            <x-link-button :href="route('product.create')" class="text-white bg-gray-800 hover:bg-gray-800 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Add New</x-link-button>
+            <x-link-button :href="route('product.create')" active="true">Add New</x-link-button>
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
@@ -35,6 +35,9 @@
                                     Price
                                 </th>
                                 <th scope="col" class="px-6 py-3">
+                                    Created Date
+                                </th>
+                                <th scope="col" class="px-6 py-3">
                                     Action
                                 </th>
                             </tr>
@@ -59,10 +62,13 @@
                                             {{$product->product_stock}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{$product->product_price}}
+                                            Tk. {{number_format($product->product_price, 2)}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            <x-link-button :href="route('product.edit', $product->id)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</x-link-button>
+                                            {{ \Carbon\Carbon::parse($product->created_at)->format('d M Y') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <x-link-button :href="route('product.edit', $product->id)" active="true">Edit</x-link-button>
                                             <x-danger-button
                                                 x-data=""
                                                 x-on:click.prevent="$dispatch('open-modal', 'confirm-product-deletion-{{$product->id}}')"

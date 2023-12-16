@@ -13,7 +13,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = DB::table('products')->get();
+        $products = DB::table('products')
+        ->where('user_id', '=', Auth::id())
+        ->get();
         return view('products.index', compact('products'));
     }
 
@@ -73,7 +75,9 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = DB::table('products')->where('id', '=', $id)->first();
+        $product = DB::table('products')
+        ->where('user_id', '=', Auth::id())
+        ->where('id', '=', $id)->first();
 
         return view('products.edit', compact('product'));
     }
@@ -111,7 +115,9 @@ class ProductController extends Controller
 
         
 
-        $product = DB::table('products')->where('id', '=', $id)->update($data);
+        $product = DB::table('products')
+        ->where('user_id', '=', Auth::id())
+        ->where('id', '=', $id)->update($data);
 
         if($product != false){
             return redirect()->back()->with(['status' => 'success', 'message' => 'Product successfully updated!.']);
@@ -129,7 +135,10 @@ class ProductController extends Controller
         if(file_exists($image->product_image)){
             unlink($image->product_image);
         }
-        $product = DB::table('products')->where('id', '=', $id)->delete();
+        $product = DB::table('products')
+        ->where('user_id', '=', Auth::id())
+        ->where('id', '=', $id)
+        ->delete();
 
         if($product != false){
             return redirect()->back()->with(['status' => 'success', 'message' => 'Product successfully deleted!.']);

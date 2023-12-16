@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -11,7 +13,16 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('orders.index');
+        $orders = DB::table('orders')
+        ->join('products', 'orders.product_id', '=', 'products.id')
+        ->select('product_image','product_name', 'product_desc', 'qyt', 'unit_price', 'orders.created_at as created_at')
+        ->where('orders.user_id', '=', Auth::id())
+        ->orderByDesc('orders.created_at')
+        ->get();
+
+        $id = 'all';
+
+        return view('orders.index', compact('orders', 'id'));
     }
 
     /**
@@ -35,7 +46,46 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        //
+        if($id === 'yesterday'){
+            $orders = DB::table('orders')
+            ->join('products', 'orders.product_id', '=', 'products.id')
+            ->select('product_image','product_name', 'product_desc', 'qyt', 'unit_price', 'orders.created_at as created_at')
+            ->where('orders.user_id', '=', Auth::id())
+            ->whereDay('orders.created_at', '=', now()->day - 1)
+            ->whereYear('orders.created_at', '=', now()->year)
+            ->orderByDesc('orders.created_at')
+            ->get();
+        }else if($id === 'this-month'){
+            $orders = DB::table('orders')
+            ->join('products', 'orders.product_id', '=', 'products.id')
+            ->select('product_image','product_name', 'product_desc', 'qyt', 'unit_price', 'orders.created_at as created_at')
+            ->where('orders.user_id', '=', Auth::id())
+            ->whereMonth('orders.created_at', '=', now()->month)
+            ->whereYear('orders.created_at', '=', now()->year)
+            ->orderByDesc('orders.created_at')
+            ->get();
+        }else if($id === 'last-month'){
+            $orders = DB::table('orders')
+            ->join('products', 'orders.product_id', '=', 'products.id')
+            ->select('product_image','product_name', 'product_desc', 'qyt', 'unit_price', 'orders.created_at as created_at')
+            ->where('orders.user_id', '=', Auth::id())
+            ->whereMonth('orders.created_at', '=', now()->month - 1)
+            ->whereYear('orders.created_at', '=', now()->year)
+            ->orderByDesc('orders.created_at')
+            ->get();
+        }else{
+            $orders = DB::table('orders')
+            ->join('products', 'orders.product_id', '=', 'products.id')
+            ->select('product_image','product_name', 'product_desc', 'qyt', 'unit_price', 'orders.created_at as created_at')
+            ->where('orders.user_id', '=', Auth::id())
+            ->whereDay('orders.created_at', '=', now()->day)
+            ->whereYear('orders.created_at', '=', now()->year)
+            ->orderByDesc('orders.created_at')
+            ->get();
+        }
+        
+
+        return view('orders.index', compact('orders', 'id'));
     }
 
     /**

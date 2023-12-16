@@ -13,7 +13,11 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $products = DB::table('products')->get();
+        $products = DB::table('products')
+        ->where('user_id', '=', Auth::id())
+        ->where('product_stock', '>', 0)
+        ->get();
+        
         return view('sales.index', compact('products'));
     }
 

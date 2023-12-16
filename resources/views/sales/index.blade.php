@@ -66,7 +66,7 @@
                                             {{$product->product_stock}}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{$product->product_price}}
+                                            Tk. {{number_format($product->product_price, 2)}}
                                         </td>
                                         <td class="px-6 py-4">
                                             

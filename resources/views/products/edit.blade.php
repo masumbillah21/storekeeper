@@ -57,7 +57,7 @@
                     <!-- Product Stock -->
                     <div class="mb-3">
                         <x-input-label for="product-qyt" :value="__('Product Stock *')" />
-                        <x-text-input id="product-qyt" class="block mt-1 w-full" type="number" min="1" name="product_stock" value="{{ empty($product) ? '' : $product->product_stock }}" required/>
+                        <x-text-input id="product-qyt" class="block mt-1 w-full" type="number" min="0" name="product_stock" value="{{ empty($product) ? '' : $product->product_stock }}" required/>
                         <x-input-error :messages="$errors->get('product_stock')" class="mt-2" />
                     </div>
 
