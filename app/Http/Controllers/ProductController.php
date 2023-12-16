@@ -35,7 +35,7 @@ class ProductController extends Controller
             'product_desc' => 'required|string|max:255',
             'product_price' => 'required|numeric|between:0,9999999.99',
             'product_stock' => 'required|numeric|between:0,9999999',
-            'product_image' => 'required|mimes:png,jpg,jpeg|max:2048'
+            'product_image' => 'required|mimes:png,jpg,jpeg,webp|max:2048'
         ];
 
         $this->validate($request, $rules);
@@ -90,7 +90,7 @@ class ProductController extends Controller
             'product_stock' => 'required|numeric|between:0,9999999',
         ];
         if(empty($request->input('product_old_image'))){
-            $rules['product_image'] = 'required|mimes:png,jpg,jpeg|max:2048';
+            $rules['product_image'] = 'required|mimes:png,jpg,jpeg,webp|max:2048';
         }
         $this->validate($request, $rules);
 
@@ -114,7 +114,7 @@ class ProductController extends Controller
         $product = DB::table('products')->where('id', '=', $id)->update($data);
 
         if($product != false){
-            return redirect()->back()->with(['status' => 'success', 'message' => 'Product updated Successfully!.']);
+            return redirect()->back()->with(['status' => 'success', 'message' => 'Product successfully updated!.']);
         }else{
             return redirect()->back()->with(['status' => 'error', 'message' => 'Product Failed to update.']);
         }

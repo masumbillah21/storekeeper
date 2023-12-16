@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->double('discount');
-            $table->double('total_price');
+            $table->foreignId('product_id')->constrained();
+            $table->integer('qyt');
+            $table->double('unit_price');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

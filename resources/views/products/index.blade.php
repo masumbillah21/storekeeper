@@ -65,10 +65,10 @@
                                             <x-link-button :href="route('product.edit', $product->id)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Edit</x-link-button>
                                             <x-danger-button
                                                 x-data=""
-                                                x-on:click.prevent="$dispatch('open-modal', 'confirm-product-deletion')"
+                                                x-on:click.prevent="$dispatch('open-modal', 'confirm-product-deletion-{{$product->id}}')"
                                             >{{ __('Delete') }}</x-danger-button>
 
-                                            <x-modal name="confirm-product-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                                            <x-modal name="confirm-product-deletion-{{$product->id}}" :show="$errors->userDeletion->isNotEmpty()" focusable>
                                                 <form method="post" action="{{ route('product.destroy', $product->id) }}" class="p-6">
                                                     @csrf
                                                     @method('delete')
