@@ -74,7 +74,7 @@
                                                 x-on:click.prevent="$dispatch('open-modal', 'confirm-product-deletion-{{$product->id}}')"
                                             >{{ __('Delete') }}</x-danger-button>
 
-                                            <x-modal name="confirm-product-deletion-{{$product->id}}" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                                            <x-modal name="confirm-product-deletion-{{$product->id}}" :show="$errors->has('password_'.$product->id)" focusable>
                                                 <form method="post" action="{{ route('product.destroy', $product->id) }}" class="p-6">
                                                     @csrf
                                                     @method('delete')
@@ -84,21 +84,21 @@
                                                     </h2>
 
                                                     <p class="mt-1 text-sm text-gray-600">
-                                                        {{ __('Once your product is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                                                        {{ __('Please enter your password to confirm you would like to delete this product.') }}
                                                     </p>
 
                                                     <div class="mt-6">
-                                                        <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                                                        <x-input-label :for="'password_'.$product->id" value="{{ __('Password') }}" class="sr-only" />
 
                                                         <x-text-input
-                                                            id="password"
-                                                            name="password"
+                                                            :id="'password_'.$product->id"
+                                                            :name="'password_'.$product->id"
                                                             type="password"
                                                             class="mt-1 block w-3/4"
                                                             placeholder="{{ __('Password') }}"
                                                         />
 
-                                                        <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                                                        <x-input-error :messages="$errors->get('password_'.$product->id)" class="mt-2" />
                                                     </div>
 
                                                     <div class="mt-6 flex justify-end">

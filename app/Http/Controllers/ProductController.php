@@ -15,6 +15,7 @@ class ProductController extends Controller
     {
         $products = DB::table('products')
         ->where('user_id', '=', Auth::id())
+        ->where('is_trash', '=', 0)
         ->get();
         return view('products.index', compact('products'));
     }
@@ -36,14 +37,14 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'product_desc' => 'required|string|max:255',
             'product_price' => 'required|numeric|between:0,9999999.99',
-            'product_stock' => 'required|numeric|between:0,9999999',
+            'product_stock' => 'required|numeric|between:1,9999999',
             'product_image' => 'required|mimes:png,jpg,jpeg,webp|max:2048'
         ];
 
         $this->validate($request, $rules);
 
         $image = $request->file('product_image');
-        $name = now()->timestamp . $image->getClientOriginalName();
+        $name = now()->timestamp . '.'. $image->getClientOriginalExtension();
         $image->move(public_path('images'), $name);
 
         $product = DB::table('products')->insert([
@@ -77,6 +78,7 @@ class ProductController extends Controller
     {
         $product = DB::table('products')
         ->where('user_id', '=', Auth::id())
+        ->where('is_trash', '=', 0)
         ->where('id', '=', $id)->first();
 
         return view('products.edit', compact('product'));
@@ -106,9 +108,12 @@ class ProductController extends Controller
         ];
         
         $image = $request->file('product_image');
+        $old_image = $request->input('product_old_image');
         if(!empty($image)){
-            unlink($request->input('product_old_image'));
-            $name = now()->timestamp . $image->getClientOriginalName();
+            if(file_exists($old_image)){
+                unlink($old_image);
+            }
+            $name = now()->timestamp . '.'. $image->getClientOriginalExtension();
             $image->move(public_path('images'), $name);
             $data['product_image'] = 'images/' . $name;
         }
@@ -117,6 +122,7 @@ class ProductController extends Controller
 
         $product = DB::table('products')
         ->where('user_id', '=', Auth::id())
+        ->where('is_trash', '=', 0)
         ->where('id', '=', $id)->update($data);
 
         if($product != false){
@@ -129,16 +135,21 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        $image = DB::table('products')->select('product_image')->where('id', '=', $id)->first();
-        if(file_exists($image->product_image)){
-            unlink($image->product_image);
-        }
+        $customMessages = [
+            'password_'.$id.'.required' => 'The password is required.',
+        ];
+
+        $rules = [
+            'password_'.$id => ['required', 'current_password'],
+        ];
+        $this->validate($request, $rules, $customMessages);
+
         $product = DB::table('products')
         ->where('user_id', '=', Auth::id())
         ->where('id', '=', $id)
-        ->delete();
+        ->update(['is_trash' => 1]);
 
         if($product != false){
             return redirect()->back()->with(['status' => 'success', 'message' => 'Product successfully deleted!.']);

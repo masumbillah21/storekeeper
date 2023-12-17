@@ -16,6 +16,7 @@ class SaleController extends Controller
         $products = DB::table('products')
         ->where('user_id', '=', Auth::id())
         ->where('product_stock', '>', 0)
+        ->where('is_trash', '=', 0)
         ->get();
         
         return view('sales.index', compact('products'));
@@ -60,25 +61,34 @@ class SaleController extends Controller
     {
 
         
-        $product = DB::table('products')->select('product_stock', 'product_price')->where('id', '=', $id)->first();
-        
+        $product = DB::table('products')
+            ->select('product_stock', 'product_price')
+            ->where('is_trash', '=', 0)
+            ->where('id', '=', $id)->first();
 
-        $rules = [
-            'product_stock' => 'required|numeric|between:0,'.$product->product_stock,
+        $customMessages = [
+            'product_stock_'.$id.'.required' => 'The product quantity is required.',
+            'product_stock_'.$id.'.numeric' => 'The product quantity must be a number.',
+            'product_stock_'.$id.'.between' => 'The product quantity must be a 1 to '.$product->product_stock.'.',
         ];
+    
+        $rules = [
+            'product_stock_'.$id => 'required|numeric|between:1,'.$product->product_stock,
+        ];
+        $this->validate($request, $rules, $customMessages);
 
-        $this->validate($request, $rules);
 
-
-        $stock = DB::table('products')->where('id', '=', $id)->update([
-            'product_stock' => $product->product_stock - $request->input('product_stock'),
-        ]);
+        $stock = DB::table('products')->where('id', '=', $id)
+                    ->where('is_trash', '=', 0)
+                    ->update([
+                        'product_stock' => $product->product_stock - $request->input('product_stock_'.$id),
+                    ]);
 
         if($stock != false){
             $sale = DB::table('orders')->insert([
                 'user_id' => Auth::id(),
                 'product_id' => $id,
-                'qyt' => $request->input('product_stock'),
+                'qyt' => $request->input('product_stock_'.$id),
                 'unit_price' => $product->product_price,
             ]);
         }else{

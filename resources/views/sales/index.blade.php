@@ -75,16 +75,16 @@
                                                 x-on:click.prevent="$dispatch('open-modal', 'confirm-product-sale-{{$product->id}}')"
                                             >{{ __('Sale') }}</x-primary-button>
 
-                                            <x-modal name="confirm-product-sale-{{$product->id}}" :show="$errors->has('product_stock')" focusable>
+                                            <x-modal name="confirm-product-sale-{{$product->id}}" :show="$errors->has('product_stock_'.$product->id)" focusable>
                                                 <form method="post" action="{{ route('sale.update', $product->id) }}" class="p-6">
                                                     @csrf
                                                     @method('patch')
 
                                                     <!-- Product Qyt -->
                                                     <div class="mb-3">
-                                                        <x-input-label for="product-qyt" :value="__('Product Qyt *')" />
-                                                        <x-text-input id="product-qyt" class="block mt-1 w-full" type="number" min="1" name="product_stock" required/>
-                                                        <x-input-error :messages="$errors->get('product_stock')" class="mt-2" />
+                                                        <x-input-label for="product-qyt-{$product->id}" :value="__('Product Qyt *')" />
+                                                        <x-text-input id="product-qyt-{$product->id}" class="block mt-1 w-full" type="number" min="1" :name="'product_stock_'.$product->id" required/>
+                                                        <x-input-error :messages="$errors->get('product_stock_'.$product->id)" class="mt-2" />
                                                     </div>
                                                     <div class="mt-6 flex justify-end">
                                                         <x-secondary-button x-on:click="$dispatch('close')">
