@@ -18,6 +18,7 @@ class DashboardController extends Controller
         $yesterday = DB::table('orders')
             ->where('user_id', '=', Auth::id())
             ->whereDay('created_at', '=', now()->day - 1)
+            ->whereMonth('created_at', '=', now()->month)
             ->whereYear('created_at', '=', now()->year)
             ->sum(DB::raw('unit_price * qyt'));
         

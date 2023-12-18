@@ -52,6 +52,7 @@ class OrderController extends Controller
             ->select('product_image','product_name', 'product_desc', 'qyt', 'unit_price', 'orders.created_at as created_at')
             ->where('orders.user_id', '=', Auth::id())
             ->whereDay('orders.created_at', '=', now()->day - 1)
+            ->whereMonth('orders.created_at', '=', now()->month)
             ->whereYear('orders.created_at', '=', now()->year)
             ->orderByDesc('orders.created_at')
             ->get();
@@ -79,6 +80,7 @@ class OrderController extends Controller
             ->select('product_image','product_name', 'product_desc', 'qyt', 'unit_price', 'orders.created_at as created_at')
             ->where('orders.user_id', '=', Auth::id())
             ->whereDay('orders.created_at', '=', now()->day)
+            ->whereMonth('orders.created_at', '=', now()->month)
             ->whereYear('orders.created_at', '=', now()->year)
             ->orderByDesc('orders.created_at')
             ->get();
