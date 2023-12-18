@@ -44,4 +44,8 @@
             </x-primary-button>
         </div>
     </form>
+    <div>
+        <p><strong>Email:</strong> masum@billah.com</p>
+        <p><strong>Password:</strong> 12345678</p>
+    </div>
 </x-guest-layout>
