@@ -17,6 +17,7 @@ class SaleController extends Controller
         ->where('user_id', '=', Auth::id())
         ->where('product_stock', '>', 0)
         ->where('is_trash', '=', 0)
+        ->orderByDesc('created_at')
         ->get();
         
         return view('sales.index', compact('products'));
