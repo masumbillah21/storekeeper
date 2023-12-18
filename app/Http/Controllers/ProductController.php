@@ -16,6 +16,7 @@ class ProductController extends Controller
         $products = DB::table('products')
         ->where('user_id', '=', Auth::id())
         ->where('is_trash', '=', 0)
+        ->orderByDesc('created_at')
         ->get();
         return view('products.index', compact('products'));
     }
