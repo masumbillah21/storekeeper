@@ -22,7 +22,7 @@
                         {{ __('Sales') }}
                     </x-nav-link>
                     <x-nav-link :href="route('order.index')" :active="request()->routeIs('order.index')">
-                        {{ __('Orders') }}
+                        {{ __('History') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -78,6 +78,15 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('product.index')" :active="request()->routeIs('product.index')">
+                {{ __('Products') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('sale.index')" :active="request()->routeIs('sale.index')">
+                {{ __('Sales') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('order.index')" :active="request()->routeIs('order.index')">
+                {{ __('History') }}
             </x-responsive-nav-link>
         </div>
 

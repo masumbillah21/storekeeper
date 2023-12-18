@@ -1,7 +1,7 @@
-<x-app-layout title="Orders">
+<x-app-layout title="Sales History">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Orders') }}
+            {{ __('Sales History') }}
         </h2>
     </x-slot>
 
